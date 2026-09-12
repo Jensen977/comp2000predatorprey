@@ -16,6 +16,15 @@ public class Prey extends Creature {
     
     public void movement() {
 
+    } 
+
+    @Override
+    protected int getStarvationRate(){
+        return 1; //Prey conserve energy more effectively 
+    }
+    @Override 
+    public void eat(){
+        resetStarvation();
     }
 
 
