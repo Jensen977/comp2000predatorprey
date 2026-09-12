@@ -1,5 +1,4 @@
 import java.util.List;
-import java.util.Optional;
 
 public abstract class Creature extends Entity {
 
@@ -28,7 +27,20 @@ public abstract class Creature extends Entity {
     public abstract void movement();
     public abstract void eat();
     public abstract void reproduce();
-    public abstract <E extends Entity> Optional<E> findClosest(List<E> targets); 
+
+    public <E extends Entity> E findClosest(List<E> targets){
+        E closest = null;
+        double minDist = Double.MAX_VALUE;
+
+        for (E target : targets){
+            double dist = Math.hypot(getX() - target.getX(), getY() - target.getY());
+            if (dist < minDist) {
+                minDist = dist;
+                closest = target;
+            }
+        }
+        return closest;
+    } 
 
     public int getSpeed(){
         return speed;
