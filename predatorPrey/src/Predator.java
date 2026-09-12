@@ -1,7 +1,13 @@
+import java.util.List;
+
+
+
 public class Predator extends Creature {
+    private List<Creature> sim;
     
-    public Predator(int speed, int hunger, int x, int y) {
+    public Predator(int speed, int hunger, int x, int y, List<Creature> sim) {
         super(speed, hunger, false, x, y);
+        this.sim = sim;
     }
 
     @Override 

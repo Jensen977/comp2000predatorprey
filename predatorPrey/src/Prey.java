@@ -1,9 +1,13 @@
-public class Prey extends Creature {
-    Boolean inDanger;
+import java.util.List;
 
-    public Prey(int speed, int hunger, boolean isFood, int x, int y) {
-        super(speed, hunger, isFood, x, y);
+public class Prey extends Creature {
+    private boolean inDanger;
+    private List<Creature> sim;
+
+    public Prey(int speed, int hunger,  int x, int y, List<Creature> sim) {
+        super(speed, hunger, false, x, y);
         this.inDanger = false;
+        this.sim = sim;
     }
 
     public boolean isInDanger(){
