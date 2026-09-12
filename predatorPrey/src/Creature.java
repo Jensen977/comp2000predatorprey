@@ -5,8 +5,6 @@ public abstract class Creature extends Entity {
 
     private int speed; 
     private int starvation;
-    
-    protected abstract int getStarvationRate();
 
     private static final int STARVATION_THRESHOLD = 100;
 
@@ -15,6 +13,8 @@ public abstract class Creature extends Entity {
         this.speed = speed;
         this.starvation = starvation;
     }
+
+    protected abstract int getStarvationRate();
 
     public boolean starve(){
         starvation += getStarvationRate();
