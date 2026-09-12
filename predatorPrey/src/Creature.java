@@ -3,8 +3,12 @@ import java.util.Optional;
 
 public abstract class Creature extends Entity {
 
-    protected int speed; 
-    protected int starvation;
+    private int speed; 
+    private int starvation;
+    
+    protected abstract int getStarvationRate();
+
+    private static final int STARVATION_THRESHOLD = 100;
 
     public Creature(int speed, int starvation, boolean isFood, int x, int y) {
         super(x, y, isFood);
@@ -12,12 +16,18 @@ public abstract class Creature extends Entity {
         this.starvation = starvation;
     }
 
+    public boolean starve(){
+        starvation += getStarvationRate();
+        return starvation >= STARVATION_THRESHOLD;
+    }
+
+    public void resetStarvation(){
+        starvation = 0;
+    }
+
     public abstract void movement();
-
     public abstract void eat();
-
     public abstract void reproduce();
-
     public abstract <E extends Entity> Optional<E> findClosest(List<E> targets); 
 
     public int getSpeed(){
@@ -32,7 +42,6 @@ public abstract class Creature extends Entity {
         return starvation;
     }
 
-    public void setStarvation(int starvation){
-        this.starvation = starvation;
-    }
+    
+    
 }
