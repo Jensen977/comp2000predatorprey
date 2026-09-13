@@ -22,7 +22,33 @@ public class Prey extends Creature {
         this.inDanger = inDanger;
     }
     
+    private static final int GRAZE_THRESHOLD = 60;
+
+    @Override 
     public void movement() {
+
+        if (inDanger){
+            return;
+        }
+
+        if (getStarvation() < GRAZE_THRESHOLD) {
+            return;
+        }
+
+        List<Grass> edibleGrass = new ArrayList<>();
+        for (Grass g : grassList){
+            if (g.isEdible()) {
+                edibleGrass.add(g);
+            }
+        }
+
+        Optional<Grass> target = findClosest(edibleGrass);
+        target.ifPresent(grass -> {
+            int dx = Integer.compare(grass.getX(), getX());
+            int dy = Integer.compare(grass.getY(), getY());
+            setX(getX() + dx * getSpeed());
+            setY(getY() + dy * getSpeed());
+        });
 
     } 
 
