@@ -1,13 +1,17 @@
 import java.util.List;
 
 
-
 public class Predator extends Creature {
-    private List<Creature> sim;
 
-    public Predator(int speed, int hunger, int x, int y, List<Creature> sim) {
+    private static final double CATCH_DISTANCE = 12.0;
+    private static final int HUNT_THRESHOLD = 10;
+    private static final int REPRODUCE_THRESHOLD = 25;
+
+    private List<Creature> creatures;
+
+    public Predator(int speed, int hunger, int x, int y, List<Creature> creatures) {
         super(speed, hunger, false, x, y);
-        this.sim = sim;
+        this.creatures = creatures;
     }
 
     @Override 
