@@ -5,6 +5,7 @@ public abstract class Creature extends Entity {
 
     private int speed; 
     private int starvation;
+    private boolean isDead; 
 
     private static final int STARVATION_THRESHOLD = 100;
 
@@ -12,13 +13,17 @@ public abstract class Creature extends Entity {
         super(x, y, isFood);
         this.speed = speed;
         this.starvation = starvation;
+        this.isDead = isDead;
     }
 
     protected abstract int getStarvationRate();
 
     public boolean starve(){
         starvation += getStarvationRate();
-        return starvation >= STARVATION_THRESHOLD;
+        if (starvation >= STARVATION_THRESHOLD){
+            isDead = true;    
+        }
+        return isDead;
     }
 
     public void resetStarvation(){
