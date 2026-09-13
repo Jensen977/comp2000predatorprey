@@ -1,5 +1,5 @@
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class Prey extends Creature {
@@ -21,7 +21,22 @@ public class Prey extends Creature {
     public void setInDanger(boolean inDanger){
         this.inDanger = inDanger;
     }
+
+    private static final int REPRODUCE_THRESHOLD = 20;
     
+    @Override
+    public void reproduce() {
+        if (sim == null){
+            throw new IllegalStateException("Cannot reproduce: no simulation list assigned");
+        }
+        if (getStarvation() <= REPRODUCE_THRESHOLD) {
+            Prey offspring = new Prey(getSpeed(), 0, getX(), getY(), sim, grassList);
+            sim.add(offspring);
+        }
+    }
+
+
+
     private static final int GRAZE_THRESHOLD = 60;
 
     @Override 
