@@ -29,6 +29,11 @@ public class Entity {
         this.y = y;
      }
 
+     public void setPosition(int x, int y){
+        this.x = x;
+        this.y = y;
+     }
+
      public double distanceTo(Entity other) {
          return Math.hypot(x - other.x, y - other.y);
      }
