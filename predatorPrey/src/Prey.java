@@ -70,7 +70,11 @@ public class Prey extends Creature {
     @Override
     protected int getStarvationRate(){
         return 1; //Prey conserve energy more effectively 
+
     }
+
+    private static final int EAT_RADIUS = 10;
+
     @Override 
     public void eat(){
         List<Grass> edibleGrass = new ArrayList<>();
@@ -82,8 +86,11 @@ public class Prey extends Creature {
 
         Optional<Grass> closest = findClosest(edibleGrass);
         closest.ifPresent(grass -> {
-            grass.setEaten(true);
-            resetStarvation();
+            double dist = Math.hypot(getX() - grass.getX(), getY() - grass.getY() );
+            if (dist <= EAT_RADIUS){
+                grass.setEaten(true);
+                resetStarvation();
+            }
         });
     }
 
