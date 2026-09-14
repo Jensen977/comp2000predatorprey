@@ -10,7 +10,7 @@
 ## Prey
  
 - Write logic for when being chased / in danger - *Oscar*
-- Add a proximity check to eat() as prey currently eats from anywhere (need rendering done for it to work) - *Oscar*
+- Add a proximity check to eat() as prey currently eats from anywhere (need rendering done for it to work) - *Oscar* **DONE**
 - Figure out how to not get stuck in an infite loop of chasing until starvation (going out of frame to rest or reproduce?) 
 
 ## Grass
