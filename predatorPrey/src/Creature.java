@@ -43,16 +43,24 @@ public abstract class Creature extends Entity {
             if (dist < minDist) {
                 minDist = dist;
                 closest = target;
+            }
         }
-    }
     return Optional.ofNullable(closest);
-}
+    }
+
+    private void moveByDirection(int dx, int dy){
+        setX(getX() + dx * speed);
+        setY(getY() + dy * speed);
+    }
 
     public int getSpeed(){
         return speed;
     }
 
     public void setSpeed(int speed){
+        if (speed < 1) {
+            throw new IllegalArgumentException("Speed must be at least 1");
+        }
         this.speed = speed;
     }
 
