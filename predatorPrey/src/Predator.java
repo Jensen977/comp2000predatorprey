@@ -11,6 +11,9 @@ public class Predator extends Creature {
 
     public Predator(int speed, int hunger, int x, int y, List<Creature> creatures) {
         super(speed, hunger, false, x, y);
+        if (creatures == null) {
+            throw new IllegalArgumentException("Creatures list cannot be null");
+        }
         this.creatures = creatures;
     }
 
