@@ -35,17 +35,19 @@ public class Predator extends Creature {
         return findClosest(preyList);
     }
 
-
     @Override 
     public void movement() {
         if (getStarvation() < HUNT_THRESHOLD) {
+            wander();
             return; // Not hungry enough to start hunting
         }
 
         Optional<Prey> target = findClosestPrey();
 
         if (target.isPresent()) {
-            
+            moveTowards(target.get());
+        } else {
+            wander(); // No prey found, wander randomly
         }
     }
 
