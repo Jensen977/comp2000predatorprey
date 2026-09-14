@@ -53,6 +53,18 @@ public abstract class Creature extends Entity {
         setY(getY() + dy * speed);
     }
 
+    protected void moveTowards(Entity target){
+        moveByDirection(
+            Integer.compare(getX(), target.getX()), 
+            Integer.compare(getY(), target.getY()));
+    }
+
+    protected void wander(){
+        int dx = (int) (Math.random() * 3) - 1; // Random value between -1 and 1
+        int dy = (int) (Math.random() * 3) - 1; // Random value between -1 and 1
+        moveByDirection(dx, dy);
+    }
+
     public int getSpeed(){
         return speed;
     }
