@@ -1,5 +1,6 @@
 import java.util.List;
-
+import java.util.ArrayList;
+import java.util.Optional;
 
 public class Predator extends Creature {
 
@@ -22,6 +23,24 @@ public class Predator extends Creature {
         return 3; //Predators require more energy to hunt so starvation rate is higher
     }
 
+    private Optional<Prey> findClosestPrey() {
+        List<Prey> preyList = new ArrayList<>();
+
+        for (Creature creature : creatures) {
+            if (creature instanceof Prey) {
+                preyList.add((Prey) creature);
+            }
+        }
+
+        return findClosest(preyList);
+    }
+
+
+    @Override 
+    public void movement() {
+        // TODO
+    }
+
     @Override 
     public void eat() {
         resetStarvation();
@@ -29,10 +48,6 @@ public class Predator extends Creature {
         // TODO: Needs further work
     }
 
-    @Override 
-    public void movement() {
-        // TODO
-    }
 
     @Override 
     public void reproduce() {
