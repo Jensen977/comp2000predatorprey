@@ -38,7 +38,15 @@ public class Predator extends Creature {
 
     @Override 
     public void movement() {
-        // TODO
+        if (getStarvation() < HUNT_THRESHOLD) {
+            return; // Not hungry enough to start hunting
+        }
+
+        Optional<Prey> target = findClosestPrey();
+
+        if (target.isPresent()) {
+            
+        }
     }
 
     @Override 
