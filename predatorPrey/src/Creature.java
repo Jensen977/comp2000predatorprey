@@ -3,35 +3,36 @@ import java.util.Optional;
 
 public abstract class Creature extends Entity {
 
+    private static final int STARVATION_THRESHOLD = 100;
+
     private int speed; 
     private int starvation;
-    private boolean isDead; 
-
-    private static final int STARVATION_THRESHOLD = 100;
 
     public Creature(int speed, int starvation, boolean isFood, int x, int y) {
         super(x, y, isFood);
         this.speed = speed;
         this.starvation = starvation;
-        this.isDead = isDead;
     }
 
     protected abstract int getStarvationRate();
 
     public boolean starve(){
         starvation += getStarvationRate();
-        if (starvation >= STARVATION_THRESHOLD){
-            isDead = true;    
-        }
-        return isDead;
+        return starvation >= STARVATION_THRESHOLD;
     }
 
     public void resetStarvation(){
         starvation = 0;
     }
 
+        public int getStarvation(){
+        return starvation;
+    }
+
     public abstract void movement();
+
     public abstract void eat();
+
     public abstract void reproduce();
 
     public <E extends Entity> Optional<E> findClosest(List<E> targets){
@@ -39,13 +40,17 @@ public abstract class Creature extends Entity {
         double minDist = Double.MAX_VALUE;
 
         for (E target : targets){
-            double dist = Math.hypot(getX() - target.getX(), getY() - target.getY());
+            if (target == this){ // Skip self
+                continue; 
+            }
+            double dist = distanceTo(target);
             if (dist < minDist) {
                 minDist = dist;
                 closest = target;
             }
         }
-    return Optional.ofNullable(closest);
+
+        return Optional.ofNullable(closest);
     }
 
     private void moveByDirection(int dx, int dy){
@@ -54,6 +59,12 @@ public abstract class Creature extends Entity {
     }
 
     protected void moveTowards(Entity target){
+        moveByDirection(
+            Integer.compare(target.getX(), getX()), 
+            Integer.compare(target.getY(), getY()));
+    }
+
+    protected void moveAwayFrom(Entity target){
         moveByDirection(
             Integer.compare(getX(), target.getX()), 
             Integer.compare(getY(), target.getY()));
@@ -76,10 +87,9 @@ public abstract class Creature extends Entity {
         this.speed = speed;
     }
 
-    public int getStarvation(){
-        return starvation;
+    protected int mutatedSpeed(){
+        int change = (int) (Math.random() * 3) - 1; // Random value between -1 and 1
+        return Math.max(1, speed + change); // Ensure speed is at least 1
     }
-
-    
     
 }
