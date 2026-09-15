@@ -62,7 +62,51 @@ public class Simulation {
         }
     }
 
+    public int getTick() {
+        return tick;
+    }   
+
+    public int getDay() {
+        return day;
+    }
+
+    public List<Creature> getCreatures() {
+        return creatures;
+    }
+
+    public List<Grass> getGrassList() {
+        return grassList;
+    }
+
+    public int getPredatorCount() {
+        int count = 0;
+        for (Creature creature : creatures) {
+            if (creature instanceof Predator) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int getPreyCount() {
+        int count = 0;
+        for (Creature creature : creatures) {
+            if (creature instanceof Prey) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int getEdibleGrassCount() {
+        int count = 0;
+        for (Grass grass : grassList) {
+            if (grass.isEdible()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     
-
-
 }
