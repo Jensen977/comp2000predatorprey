@@ -13,11 +13,19 @@ public class Prey extends Creature {
     private List<Creature> creatures;
     private List<Grass> grassList;
 
-    public Prey(int speed, int hunger,  int x, int y, List<Creature> creatures, List<Grass> grassList) {
+    public Prey(int speed, int hunger,  int x, int y, 
+            List<Creature> creatures, List<Grass> grassList) {
         super(speed, hunger, false, x, y);
-        this.inDanger = false;
+        if (creatures == null || grassList == null) {
+            throw new IllegalArgumentException("Creatures and grass lists cannot be null");
+        }
         this.creatures = creatures;
         this.grassList = grassList;
+    }
+
+    @Override
+    protected int getStarvationRate(){
+        return 1; //Prey conserve energy more effectively 
     }
 
     public boolean isInDanger(){
@@ -28,54 +36,49 @@ public class Prey extends Creature {
         this.inDanger = inDanger;
     }
 
-
-    @Override
-    public void reproduce() {
-        if (creatures == null){
-            throw new IllegalStateException("Cannot reproduce: no simulation list assigned");
-        }
-        if (getStarvation() <= REPRODUCE_THRESHOLD) {
-            Prey offspring = new Prey(getSpeed(), 0, getX(), getY(), creatures, grassList);
-            creatures.add(offspring);
-        }
-    }
-
-
-
-
-
-    @Override 
-    public void movement() {
-
-        if (inDanger){
-            return;
-        }
-
-        if (getStarvation() < GRAZE_THRESHOLD) {
-            return;
-        }
-
+    private Optional<Grass> findClosestEdibleGrass() {
         List<Grass> edibleGrass = new ArrayList<>();
+
         for (Grass g : grassList){
             if (g.isEdible()) {
                 edibleGrass.add(g);
             }
         }
+        return findClosest(edibleGrass);
+    }
 
-        Optional<Grass> target = findClosest(edibleGrass);
-        target.ifPresent(grass -> {
-            int dx = Integer.compare(grass.getX(), getX());
-            int dy = Integer.compare(grass.getY(), getY());
-            setX(getX() + dx * getSpeed());
-            setY(getY() + dy * getSpeed());
-        });
+    private Optional<Creature> findClosestPredator() {
+        List<Creature> predators = new ArrayList<>();
 
+        for (Creature creature : creatures) {
+            if (creature instanceof Predator) {
+                predators.add(creature);
+            }
+        }
+        return findClosest(predators);
+    }
+
+    @Override 
+    public void movement() {
+        inDanger = findClosestPredator().isPresent() 
+            && distanceTo(findClosestPredator().get()) <= DANGER_DISTANCE;
+
+        if (inDanger) {
+            moveAwayFrom(findClosestPredator().get());
+            return;
+        }
+
+        if (getStarvation() >= GRAZE_THRESHOLD) {
+            if (findClosestEdibleGrass().isPresent()) {
+                moveTowards(findClosestEdibleGrass().get());
+            } 
+            return;
+        }
+
+        wander();
     } 
 
-    @Override
-    protected int getStarvationRate(){
-        return 1; //Prey conserve energy more effectively 
-    }
+
     @Override 
     public void eat(){
         List<Grass> edibleGrass = new ArrayList<>();
@@ -92,5 +95,14 @@ public class Prey extends Creature {
         });
     }
 
-
+    @Override
+    public void reproduce() {
+        if (creatures == null){
+            throw new IllegalStateException("Cannot reproduce: no simulation list assigned");
+        }
+        if (getStarvation() <= REPRODUCE_THRESHOLD) {
+            Prey offspring = new Prey(getSpeed(), 0, getX(), getY(), creatures, grassList);
+            creatures.add(offspring);
+        }
+    }
 }
