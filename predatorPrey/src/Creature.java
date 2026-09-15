@@ -86,5 +86,10 @@ public abstract class Creature extends Entity {
         }
         this.speed = speed;
     }
+
+    protected int mutatedSpeed(){
+        int change = (int) (Math.random() * 3) - 1; // Random value between -1 and 1
+        return Math.max(1, speed + change); // Ensure speed is at least 1
+    }
     
 }
