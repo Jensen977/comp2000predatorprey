@@ -60,17 +60,21 @@ public class Prey extends Creature {
 
     @Override 
     public void movement() {
-        inDanger = findClosestPredator().isPresent() 
-            && distanceTo(findClosestPredator().get()) <= DANGER_DISTANCE;
+        Optional<Creature> closestPredator = findClosestPredator();
+
+        inDanger = closestPredator.isPresent() 
+            && distanceTo(closestPredator.get()) <= DANGER_DISTANCE;
 
         if (inDanger) {
-            moveAwayFrom(findClosestPredator().get());
+            moveAwayFrom(closestPredator.get());
             return;
         }
 
+        Optional<Grass> closestGrass = findClosestEdibleGrass();
+
         if (getStarvation() >= GRAZE_THRESHOLD) {
-            if (findClosestEdibleGrass().isPresent()) {
-                moveTowards(findClosestEdibleGrass().get());
+            if (closestGrass.isPresent()) {
+                moveTowards(closestGrass.get());
             } 
             return;
         }
@@ -81,18 +85,16 @@ public class Prey extends Creature {
 
     @Override 
     public void eat(){
-        List<Grass> edibleGrass = new ArrayList<>();
-        for (Grass g : grassList){
-            if (g.isEdible()) {
-                edibleGrass.add(g);
-            }
+        if (getStarvation() < GRAZE_THRESHOLD) {
+            return; // Not hungry enough to eat
         }
 
-        Optional<Grass> closest = findClosest(edibleGrass);
-        closest.ifPresent(grass -> {
-            grass.setEaten(true);
+        Optional<Grass> closestGrass = findClosestEdibleGrass();
+        if (closestGrass.isPresent() 
+            && distanceTo(closestGrass.get()) <= EATING_DISTANCE) {
+            closestGrass.get().consume();
             resetStarvation();
-        });
+        }
     }
 
     @Override
