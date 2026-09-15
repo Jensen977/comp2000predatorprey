@@ -40,7 +40,7 @@ public class Simulation {
 
         for (int i = 0; i < INITIAL_PREDATORS; i++) {
             creatures.add(new Predator(
-                random.nextInt(5) + 1, // speed
+                random.nextInt(5) + 1, // random speed between 1 and 5
                 0,
                 randomX(),
                 randomY(),
@@ -49,7 +49,7 @@ public class Simulation {
 
         for (int i = 0; i < INITIAL_PREY; i++) {
             creatures.add(new Prey(
-                random.nextInt(3) + 1, // speed
+                random.nextInt(3) + 1, // random speed between 1 and 3
                 0,
                 randomX(),
                 randomY(),
@@ -147,7 +147,18 @@ public class Simulation {
     }
 
     private void creatureReproduction() {
-        
+        List<Creature> possibleParents = new ArrayList<>(creatures);
+        for (Creature creature : possibleParents) {
+            if (creature instanceof Predator
+                    && day % 5 == 0
+                    && random.nextDouble() < 0.1) { // 10% chance to reproduce every 5 days
+                creature.reproduce();
+            } else if (creature instanceof Prey
+                    && day % 3 == 0
+                    && random.nextDouble() < 0.2) { // 20% chance to reproduce every 3 days
+                creature.reproduce();
+            }
+        }
     }
 
 }
