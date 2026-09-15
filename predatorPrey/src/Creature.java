@@ -5,7 +5,6 @@ public abstract class Creature extends Entity {
 
     private int speed; 
     private int starvation;
-    private boolean isDead; 
 
     private static final int STARVATION_THRESHOLD = 100;
 
@@ -13,25 +12,27 @@ public abstract class Creature extends Entity {
         super(x, y, isFood);
         this.speed = speed;
         this.starvation = starvation;
-        this.isDead = isDead;
     }
 
     protected abstract int getStarvationRate();
 
     public boolean starve(){
         starvation += getStarvationRate();
-        if (starvation >= STARVATION_THRESHOLD){
-            isDead = true;    
-        }
-        return isDead;
+        return starvation >= STARVATION_THRESHOLD;
     }
 
     public void resetStarvation(){
         starvation = 0;
     }
 
+        public int getStarvation(){
+        return starvation;
+    }
+
     public abstract void movement();
+
     public abstract void eat();
+
     public abstract void reproduce();
 
     public <E extends Entity> Optional<E> findClosest(List<E> targets){
@@ -39,13 +40,17 @@ public abstract class Creature extends Entity {
         double minDist = Double.MAX_VALUE;
 
         for (E target : targets){
-            double dist = Math.hypot(getX() - target.getX(), getY() - target.getY());
+            if (target == this){ // Skip self
+                continue; 
+            }
+            double dist = distanceTo(target);
             if (dist < minDist) {
                 minDist = dist;
                 closest = target;
             }
         }
-    return Optional.ofNullable(closest);
+
+        return Optional.ofNullable(closest);
     }
 
     private void moveByDirection(int dx, int dy){
@@ -75,11 +80,5 @@ public abstract class Creature extends Entity {
         }
         this.speed = speed;
     }
-
-    public int getStarvation(){
-        return starvation;
-    }
-
-    
     
 }
