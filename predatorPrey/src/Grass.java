@@ -5,7 +5,7 @@ public class Grass extends Entity{
     private int growthTimer;
     private boolean isEaten;
 
-    public Grass (int x, int y, int growthTimer) {
+    public Grass(int x, int y, int growthTimer){
         super(x, y, true);
         this.growthTimer = Math.max(0, growthTimer);
         this.isEaten = growthTimer > 0; // If growthTimer is greater than 0, it means the grass has been eaten and is regrowing
@@ -42,6 +42,11 @@ public class Grass extends Entity{
         if (growthTimer <= 0){
             isEaten = false; // Grass has regrown
         }
-    
     }
+
+    public void consume(){
+        isEaten = true;
+        growthTimer = DEFAULT_REGROWTH_TICKS; // Reset growth timer when consumed
+    }
+
 }
