@@ -14,8 +14,8 @@ public class Simulation {
     private int tick;
     private int day;
 
-    private final List<Creature> creatures;
-    private final List<Grass> grassList;
+    private final List<Creature> creatures = new ArrayList<>();
+    private final List<Grass> grassList = new ArrayList<>();
     private final Random random; 
 
     public Simulation() {
