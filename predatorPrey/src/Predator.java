@@ -65,6 +65,15 @@ public class Predator extends Creature {
 
     @Override 
     public void reproduce() {
-        //TODO
+        if (getStarvation() <= REPRODUCE_THRESHOLD) {
+            Predator offspring = new Predator(
+                mutatedSpeed(), 
+                0, 
+                getX() + (int)(Math.random() * 21) - 10, 
+                getY() + (int)(Math.random() * 21) - 10, 
+                creatures);
+
+            creatures.add(offspring);
+        }
     }
 }

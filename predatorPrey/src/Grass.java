@@ -1,15 +1,14 @@
 public class Grass extends Entity{
+
+    private static final int DEFAULT_REGROWTH_TICKS = 50;
+
     private int growthTimer;
     private boolean isEaten;
 
-    public Grass (int x, int y, int growthTimer){
+    public Grass(int x, int y, int growthTimer){
         super(x, y, true);
-        this.growthTimer = growthTimer;
-        this.isEaten = false;
-    }
-
-    public boolean isEdible(){
-        return !isEaten;
+        this.growthTimer = Math.max(0, growthTimer);
+        this.isEaten = growthTimer > 0; // If growthTimer is greater than 0, it means the grass has been eaten and is regrowing
     }
 
     public int getGrowthTimer(){
@@ -17,7 +16,8 @@ public class Grass extends Entity{
     }
 
     public void setGrowthTimer(int growthTimer){
-        this.growthTimer = growthTimer;
+        this.growthTimer = Math.max(0, growthTimer);
+        this.isEaten = growthTimer > 0; // If growthTimer is greater than 0, it means the grass has been eaten and is regrowing
     }
 
     public boolean isEaten(){
@@ -26,5 +26,27 @@ public class Grass extends Entity{
 
     public void setEaten(boolean isEaten){
         this.isEaten = isEaten;
+        growthTimer = isEaten ? DEFAULT_REGROWTH_TICKS : 0; // Reset growth timer if eaten
     }
+
+    public boolean isEdible(){
+        return !isEaten;
+    }
+
+    public void tick(){
+        if (!isEaten){
+            return;
+        }
+
+        growthTimer--;
+        if (growthTimer <= 0){
+            isEaten = false; // Grass has regrown
+        }
+    }
+
+    public void consume(){
+        isEaten = true;
+        growthTimer = DEFAULT_REGROWTH_TICKS; // Reset growth timer when consumed
+    }
+
 }
