@@ -60,6 +60,12 @@ public abstract class Creature extends Entity {
 
     protected void moveTowards(Entity target){
         moveByDirection(
+            Integer.compare(target.getX(), getX()), 
+            Integer.compare(target.getY(), getY()));
+    }
+
+    protected void moveAwayFrom(Entity target){
+        moveByDirection(
             Integer.compare(getX(), target.getX()), 
             Integer.compare(getY(), target.getY()));
     }
