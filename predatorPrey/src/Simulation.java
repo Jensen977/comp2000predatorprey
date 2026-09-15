@@ -23,7 +23,13 @@ public class Simulation {
         reset();
     }
 
+    private int randomX() {
+        return random.nextInt(WORLD_WIDTH);
+    }
 
+    private int randomY() {
+        return random.nextInt(WORLD_HEIGHT);
+    }
 
     public void reset() {
         creatures.clear();
@@ -36,25 +42,27 @@ public class Simulation {
             creatures.add(new Predator(
                 random.nextInt(5) + 1, // speed
                 0,
-                random.nextInt(WORLD_WIDTH), // x
-                random.nextInt(WORLD_HEIGHT), // y
+                randomX(),
+                randomY(),
                 creatures));
         }
 
         for (int i = 0; i < INITIAL_PREY; i++) {
             creatures.add(new Prey(
-                random.nextInt(5) + 1, // speed
+                random.nextInt(3) + 1, // speed
                 0,
-                random.nextInt(WORLD_WIDTH), // x
-                random.nextInt(WORLD_HEIGHT), // y
-                creatures,
+                randomX(),
+                randomY(),
+                creatures, 
                 grassList));
         }
 
         for (int i = 0; i < INITIAL_GRASS; i++) {
-            grassList.add(new Grass(
-                random.nextInt(WORLD_WIDTH), // x
-                random.nextInt(WORLD_HEIGHT), 0)); // y
+            grassList.add(new Grass(randomX(), randomY(), 0));
         }
     }
+
+    
+
+
 }
