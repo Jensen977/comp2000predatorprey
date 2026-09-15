@@ -134,7 +134,20 @@ public class Simulation {
 
     public void nextDay() {
         day++;
-        tick = 0;
+        
+        List<Creature> creaturesAtStartOfDay = new ArrayList<>(creatures);
+        for (Creature creature : creaturesAtStartOfDay) {
+            if (creature.starve()) {
+                creatures.remove(creature);
+            } 
+        }
+
+        creatureReproduction();
+
+    }
+
+    private void creatureReproduction() {
+        
     }
 
 }
