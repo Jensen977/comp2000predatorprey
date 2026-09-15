@@ -3,10 +3,10 @@ import java.util.Optional;
 
 public abstract class Creature extends Entity {
 
+    private static final int STARVATION_THRESHOLD = 100;
+
     private int speed; 
     private int starvation;
-
-    private static final int STARVATION_THRESHOLD = 100;
 
     public Creature(int speed, int starvation, boolean isFood, int x, int y) {
         super(x, y, isFood);

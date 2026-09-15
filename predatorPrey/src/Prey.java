@@ -3,14 +3,20 @@ import java.util.List;
 import java.util.Optional;
 
 public class Prey extends Creature {
+
+    private static final double DANGER_DISTANCE = 75.0;
+    private static final double EATING_DISTANCE = 15.0;
+    private static final int GRAZE_THRESHOLD = 60;
+    private static final int REPRODUCE_THRESHOLD = 20;    
+
     private boolean inDanger;
-    private List<Creature> sim;
+    private List<Creature> creatures;
     private List<Grass> grassList;
 
-    public Prey(int speed, int hunger,  int x, int y, List<Creature> sim, List<Grass> grassList) {
+    public Prey(int speed, int hunger,  int x, int y, List<Creature> creatures, List<Grass> grassList) {
         super(speed, hunger, false, x, y);
         this.inDanger = false;
-        this.sim = sim;
+        this.creatures = creatures;
         this.grassList = grassList;
     }
 
@@ -22,22 +28,21 @@ public class Prey extends Creature {
         this.inDanger = inDanger;
     }
 
-    private static final int REPRODUCE_THRESHOLD = 20;
-    
+
     @Override
     public void reproduce() {
-        if (sim == null){
+        if (creatures == null){
             throw new IllegalStateException("Cannot reproduce: no simulation list assigned");
         }
         if (getStarvation() <= REPRODUCE_THRESHOLD) {
-            Prey offspring = new Prey(getSpeed(), 0, getX(), getY(), sim, grassList);
-            sim.add(offspring);
+            Prey offspring = new Prey(getSpeed(), 0, getX(), getY(), creatures, grassList);
+            creatures.add(offspring);
         }
     }
 
 
 
-    private static final int GRAZE_THRESHOLD = 60;
+
 
     @Override 
     public void movement() {
