@@ -108,5 +108,19 @@ public class Simulation {
         return count;
     }
 
-    
+    public void update() {
+        tick++; 
+
+        for (Grass grass : grassList) {
+            grass.tick();
+        }
+
+
+    }
+
+    public void nextDay() {
+        day++;
+        tick = 0;
+    }
+
 }
