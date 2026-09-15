@@ -82,32 +82,6 @@ public class Prey extends Creature {
         wander();
     } 
 
-
-        List<Grass> edibleGrass = new ArrayList<>();
-        for (Grass g : grassList){
-            if (g.isEdible()) {
-                edibleGrass.add(g);
-            }
-        }
-
-        Optional<Grass> target = findClosest(edibleGrass);
-        target.ifPresent(grass -> {
-            int dx = Integer.compare(grass.getX(), getX());
-            int dy = Integer.compare(grass.getY(), getY());
-            setX(getX() + dx * getSpeed());
-            setY(getY() + dy * getSpeed());
-        });
-
-    } 
-
-    @Override
-    protected int getStarvationRate(){
-        return 1; //Prey conserve energy more effectively 
-
-    }
-
-    private static final int EAT_RADIUS = 10;
-
     @Override 
     public void eat(){
         if (getStarvation() < GRAZE_THRESHOLD) {
@@ -115,19 +89,12 @@ public class Prey extends Creature {
         }
 
         Optional<Grass> closestGrass = findClosestEdibleGrass();
+        
         if (closestGrass.isPresent() 
             && distanceTo(closestGrass.get()) <= EATING_DISTANCE) {
             closestGrass.get().consume();
             resetStarvation();
         }
-        Optional<Grass> closest = findClosest(edibleGrass);
-        closest.ifPresent(grass -> {
-            double dist = Math.hypot(getX() - grass.getX(), getY() - grass.getY() );
-            if (dist <= EAT_RADIUS){
-                grass.setEaten(true);
-                resetStarvation();
-            }
-        });
     }
 
     @Override
