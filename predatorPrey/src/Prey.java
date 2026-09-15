@@ -99,11 +99,15 @@ public class Prey extends Creature {
 
     @Override
     public void reproduce() {
-        if (creatures == null){
-            throw new IllegalStateException("Cannot reproduce: no simulation list assigned");
-        }
         if (getStarvation() <= REPRODUCE_THRESHOLD) {
-            Prey offspring = new Prey(getSpeed(), 0, getX(), getY(), creatures, grassList);
+            Prey offspring = new Prey(
+                mutatedSpeed(), 
+                0, 
+                getX() + (int)(Math.random() * 21) - 10, 
+                getY() + (int)(Math.random() * 21) - 10, 
+                creatures, 
+                grassList);
+                
             creatures.add(offspring);
         }
     }
