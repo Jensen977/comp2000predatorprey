@@ -1,7 +1,7 @@
 public class Entity {
      private int x;
      private int y; 
-     private boolean isFood;
+     private final boolean isFood;
 
      public Entity(int x, int y, boolean isFood) {
          this.x = x;
@@ -27,5 +27,9 @@ public class Entity {
 
      public void setY(int y){
         this.y = y;
+     }
+
+     public double distanceTo(Entity other) {
+         return Math.hypot(x - other.x, y - other.y);
      }
 }

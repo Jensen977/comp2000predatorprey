@@ -5,6 +5,7 @@ public abstract class Creature extends Entity {
 
     private int speed; 
     private int starvation;
+    private boolean isDead; 
 
     private static final int STARVATION_THRESHOLD = 100;
 
@@ -12,13 +13,17 @@ public abstract class Creature extends Entity {
         super(x, y, isFood);
         this.speed = speed;
         this.starvation = starvation;
+        this.isDead = isDead;
     }
 
     protected abstract int getStarvationRate();
 
     public boolean starve(){
         starvation += getStarvationRate();
-        return starvation >= STARVATION_THRESHOLD;
+        if (starvation >= STARVATION_THRESHOLD){
+            isDead = true;    
+        }
+        return isDead;
     }
 
     public void resetStarvation(){
@@ -38,16 +43,36 @@ public abstract class Creature extends Entity {
             if (dist < minDist) {
                 minDist = dist;
                 closest = target;
+            }
         }
-    }
     return Optional.ofNullable(closest);
-}
+    }
+
+    private void moveByDirection(int dx, int dy){
+        setX(getX() + dx * speed);
+        setY(getY() + dy * speed);
+    }
+
+    protected void moveTowards(Entity target){
+        moveByDirection(
+            Integer.compare(getX(), target.getX()), 
+            Integer.compare(getY(), target.getY()));
+    }
+
+    protected void wander(){
+        int dx = (int) (Math.random() * 3) - 1; // Random value between -1 and 1
+        int dy = (int) (Math.random() * 3) - 1; // Random value between -1 and 1
+        moveByDirection(dx, dy);
+    }
 
     public int getSpeed(){
         return speed;
     }
 
     public void setSpeed(int speed){
+        if (speed < 1) {
+            throw new IllegalArgumentException("Speed must be at least 1");
+        }
         this.speed = speed;
     }
 

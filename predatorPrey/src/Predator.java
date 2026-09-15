@@ -1,13 +1,21 @@
 import java.util.List;
-
-
+import java.util.ArrayList;
+import java.util.Optional;
 
 public class Predator extends Creature {
-    private List<Creature> sim;
 
-    public Predator(int speed, int hunger, int x, int y, List<Creature> sim) {
+    private static final double CATCH_DISTANCE = 12.0;
+    private static final int HUNT_THRESHOLD = 10;
+    private static final int REPRODUCE_THRESHOLD = 25;
+
+    private List<Creature> creatures;
+
+    public Predator(int speed, int hunger, int x, int y, List<Creature> creatures) {
         super(speed, hunger, false, x, y);
-        this.sim = sim;
+        if (creatures == null) {
+            throw new IllegalArgumentException("Creatures list cannot be null");
+        }
+        this.creatures = creatures;
     }
 
     @Override 
@@ -15,16 +23,44 @@ public class Predator extends Creature {
         return 3; //Predators require more energy to hunt so starvation rate is higher
     }
 
-    @Override 
-    public void eat() {
-        resetStarvation();
+    private Optional<Prey> findClosestPrey() {
+        List<Prey> preyList = new ArrayList<>();
 
-        // TODO: Needs further work
+        for (Creature creature : creatures) {
+            if (creature instanceof Prey) {
+                preyList.add((Prey) creature);
+            }
+        }
+
+        return findClosest(preyList);
     }
 
     @Override 
     public void movement() {
-        // TODO
+        if (getStarvation() < HUNT_THRESHOLD) {
+            wander();
+            return; // Not hungry enough to start hunting
+        }
+
+        Optional<Prey> target = findClosestPrey();
+
+        if (target.isPresent()) {
+            moveTowards(target.get());
+        } else {
+            wander(); // No prey found, wander randomly
+        }
+    }
+
+    @Override 
+    public void eat() {
+        Optional<Prey> target = findClosestPrey();
+
+        if (target.isPresent() 
+            && distanceTo(target.get()) <= CATCH_DISTANCE) {
+                
+            creatures.remove(target.get());
+            resetStarvation();
+        }
     }
 
     @Override 
