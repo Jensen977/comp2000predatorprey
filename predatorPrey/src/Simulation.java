@@ -115,7 +115,21 @@ public class Simulation {
             grass.tick();
         }
 
+        List<Creature> movingCreatures = new ArrayList<>(creatures);
+        for (Creature creature : movingCreatures) {
+            creature.movement();
+        }
 
+        List<Creature> eatingCreatures = new ArrayList<>(creatures);
+        for (Creature creature : eatingCreatures) {
+            if (creatures.contains(creature)) { // Check if the creature is still in the list
+                creature.eat();
+            }
+        }
+
+        if (tick % TICKS_PER_DAY == 0) {
+            nextDay();
+        }
     }
 
     public void nextDay() {
