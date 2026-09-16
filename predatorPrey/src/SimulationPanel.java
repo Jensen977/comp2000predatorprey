@@ -79,12 +79,28 @@ public class SimulationPanel extends JPanel {
         g2d.fill(Rabbit);
     }
 
-    private void drawCreature() {
-        // Implement drawing logic for generic creatures
+    private void drawCreature(Graphics2D g2d, int scaleX, int scaleY) {
+        for (Creature creature : simulation.getCreatures()) {
+            int screenX = toScreenX(creature.getX(), scaleX);
+            int screenY = toScreenY(creature.getY(), scaleY);
+
+            if (creature instanceof Predator) {
+                drawPredator(g2d, screenX, screenY);
+            } else if (creature instanceof Prey) {
+                drawPrey(g2d, screenX, screenY);
+            }
+        }
     }
 
-    private void drawGrass() {
-        // Implement drawing logic for grass
+    private void drawGrass(Graphics2D g2d, int scaleX, int scaleY) {
+        g2d.setColor(GRASS_COLOR);
+        for (Grass grass : simulation.getGrassList()) {
+            if (grass.isEdible()) { // Only draw edible grass
+                int screenX = toScreenX(grass.getX(), scaleX);
+                int screenY = toScreenY(grass.getY(), scaleY);
+                g2d.fillOval(screenX - 3, screenY - 3, 6, 6);
+            }
+        }
     }
 
 
