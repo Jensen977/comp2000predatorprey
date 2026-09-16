@@ -2,6 +2,7 @@ import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Path2D;
+import java.awt.Dimension;
 import java.awt.Color;
 
 public class SimulationPanel extends JPanel {
@@ -11,15 +12,19 @@ public class SimulationPanel extends JPanel {
     private static final Color DANGER_COLOR = Color.RED;
     private static final Color GRASS_COLOR = Color.GREEN;
 
+    private static final Color FIELD_COLOR = new Color(210, 180, 140);
+
     private final Simulation simulation;
 
     public SimulationPanel(Simulation simulation) {
         this.simulation = simulation;
+        setPreferredSize(new Dimension(900, 600));
+        setBackground(FIELD_COLOR);
     }
 
     @Override 
-    protected void paintComponent(java.awt.Graphics g) {
-        super.paintComponent(g);
+    protected void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
         // Here you would add code to draw the simulation state
         // For example, you could iterate over the creatures and grass and draw them
     }
