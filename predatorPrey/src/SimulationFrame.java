@@ -41,6 +41,20 @@ public class SimulationFrame extends JFrame{
         JButton pauseButton = new JButton("Pause"); 
         JButton resetButton = new JButton("Reset");
 
+        startButton.addActionListener(event -> timer.start());
+        pauseButton.addActionListener(event -> timer.stop());
+        resetButton.addActionListener(event -> {
+            timer.stop(); 
+            simulation.reset();
+            simulationPanel.repaint();
+            updateLabels();
+        });
+
+        controls.add(startButton);
+        controls.add(pauseButton);
+        controls.add(resetButton);
+        controls.add(statisticsLabel); 
+
         return controls;
     }
 
