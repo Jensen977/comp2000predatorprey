@@ -25,8 +25,15 @@ public class SimulationPanel extends JPanel {
     @Override 
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
-        // Here you would add code to draw the simulation state
-        // For example, you could iterate over the creatures and grass and draw them
+        
+        Graphics2D g2d = (Graphics2D) graphics.create(); 
+        
+        double scaleX = getWidth() / (double) Simulation.WORLD_WIDTH;
+        double scaleY = getHeight() / (double) Simulation.WORLD_HEIGHT; 
+
+        drawCreature(g2d, scaleX, scaleY);
+        drawGrass(g2d, scaleX, scaleY); 
+        drawLegend(g2d); 
     }
     
     private int toScreenX(int worldX, double scaleX) {
@@ -85,7 +92,7 @@ public class SimulationPanel extends JPanel {
         g2d.fill(Rabbit);
     }
 
-    private void drawCreature(Graphics2D g2d, int scaleX, int scaleY) {
+    private void drawCreature(Graphics2D g2d, double scaleX, double scaleY) {
         for (Creature creature : simulation.getCreatures()) {
             int screenX = toScreenX(creature.getX(), scaleX);
             int screenY = toScreenY(creature.getY(), scaleY);
@@ -98,7 +105,7 @@ public class SimulationPanel extends JPanel {
         }
     }
 
-    private void drawGrass(Graphics2D g2d, int scaleX, int scaleY) {
+    private void drawGrass(Graphics2D g2d, double scaleX, double scaleY) {
         g2d.setColor(GRASS_COLOR);
         for (Grass grass : simulation.getGrassList()) {
             if (grass.isEdible()) { // Only draw edible grass
