@@ -118,6 +118,7 @@ public class Simulation {
         List<Creature> movingCreatures = new ArrayList<>(creatures);
         for (Creature creature : movingCreatures) {
             creature.movement();
+            creature.keepInside(WORLD_WIDTH, WORLD_HEIGHT);
         }
 
         List<Creature> eatingCreatures = new ArrayList<>(creatures);
