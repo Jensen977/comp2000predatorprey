@@ -1,6 +1,6 @@
 public class Grass extends Entity{
 
-    private static final int DEFAULT_REGROWTH_TICKS = 50;
+    private static final int DEFAULT_REGROWTH_TICKS = 500;
 
     private int growthTimer;
     private boolean isEaten;
