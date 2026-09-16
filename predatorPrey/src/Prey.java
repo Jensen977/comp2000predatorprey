@@ -6,7 +6,7 @@ public class Prey extends Creature {
 
     private static final double DANGER_DISTANCE = 75.0;
     private static final double EATING_DISTANCE = 15.0;
-    private static final int GRAZE_THRESHOLD = 60;
+    private static final int GRAZE_THRESHOLD = 20;
     private static final int REPRODUCE_THRESHOLD = 20;    
 
     private boolean inDanger;
@@ -25,7 +25,7 @@ public class Prey extends Creature {
 
     @Override
     protected int getStarvationRate(){
-        return 1; //Prey conserve energy more effectively 
+        return 5; //Prey conserve energy less effectively 
     }
 
     public boolean isInDanger(){

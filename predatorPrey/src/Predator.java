@@ -5,7 +5,7 @@ import java.util.Optional;
 public class Predator extends Creature {
 
     private static final double CATCH_DISTANCE = 12.0;
-    private static final int HUNT_THRESHOLD = 10;
+    private static final int HUNT_THRESHOLD = 20;
     private static final int REPRODUCE_THRESHOLD = 25;
 
     private List<Creature> creatures;
@@ -20,7 +20,7 @@ public class Predator extends Creature {
 
     @Override 
     protected int getStarvationRate(){
-        return 3; //Predators require more energy to hunt so starvation rate is higher
+        return 3; //Predators are more efficient at conserving internal metabolic energy
     }
 
     private Optional<Prey> findClosestPrey() {
