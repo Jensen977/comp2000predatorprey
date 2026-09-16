@@ -8,6 +8,7 @@ public class SimulationPanel extends JPanel {
 
     private static final Color PREDATOR_COLOR = Color.ORANGE;
     private static final Color PREY_COLOR = Color.WHITE;
+    private static final Color DANGER_COLOR = Color.RED;
     private static final Color GRASS_COLOR = Color.GREEN;
 
     private final Simulation simulation;
@@ -53,7 +54,7 @@ public class SimulationPanel extends JPanel {
         g2d.fill(Fox);
     }
 
-    private void drawPrey(Graphics2D g2d, int x, int y) {
+    private void drawPrey(Graphics2D g2d, Prey prey, int x, int y) {
         Path2D Rabbit = new Path2D.Double();
 
         Rabbit.moveTo(x - 10, y - 10);
@@ -75,7 +76,7 @@ public class SimulationPanel extends JPanel {
 
         Rabbit.closePath();
 
-        g2d.setColor(PREY_COLOR);
+        g2d.setColor(prey.isInDanger() ? DANGER_COLOR : PREY_COLOR);
         g2d.fill(Rabbit);
     }
 
@@ -87,7 +88,7 @@ public class SimulationPanel extends JPanel {
             if (creature instanceof Predator) {
                 drawPredator(g2d, screenX, screenY);
             } else if (creature instanceof Prey) {
-                drawPrey(g2d, screenX, screenY);
+                drawPrey(g2d, (Prey) creature, screenX, screenY);
             }
         }
     }
@@ -103,5 +104,29 @@ public class SimulationPanel extends JPanel {
         }
     }
 
+    private void drawLegend(Graphics2D g2d) {
+        g2d.setColor(new Color(250, 240, 210)); 
+        g2d.fillRoundRect(10, 10, 380, 40, 10, 10); 
 
+        g2d.setColor(Color.BLACK);
+        g2d.drawRoundRect(10, 10, 380, 40, 10, 10);
+        
+        g2d.setColor(PREDATOR_COLOR);
+        g2d.fillOval(20, 20, 10, 10);
+
+        g2d.setColor(PREY_COLOR); 
+        g2d.fillOval(110, 20, 10, 10); 
+
+        g2d.setColor(DANGER_COLOR);
+        g2d.fillOval(180, 20, 10, 10); 
+
+        g2d.setColor(GRASS_COLOR); 
+        g2d.fillOval(300, 20, 10, 10); 
+
+        g2d.setColor(Color.DARK_GRAY); 
+        g2d.drawString("Predator", 35, 30); 
+        g2d.drawString("Prey", 125, 30); 
+        g2d.drawString("Fleeing Prey", 195, 30); 
+        g2d.drawString("Predator", 315, 30); 
+    }
 }
