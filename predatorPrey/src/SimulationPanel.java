@@ -9,7 +9,7 @@ public class SimulationPanel extends JPanel {
 
     private static final Color PREDATOR_COLOR = Color.ORANGE;
     private static final Color PREY_COLOR = Color.WHITE;
-    private static final Color DANGER_COLOR = Color.RED;
+    private static final Color DANGER_COLOR = Color.LIGHT_GRAY;
     private static final Color GRASS_COLOR = Color.GREEN;
 
     private static final Color FIELD_COLOR = new Color(210, 180, 140);
@@ -139,6 +139,6 @@ public class SimulationPanel extends JPanel {
         g2d.drawString("Predator", 35, 30); 
         g2d.drawString("Prey", 125, 30); 
         g2d.drawString("Fleeing Prey", 195, 30); 
-        g2d.drawString("Predator", 315, 30); 
+        g2d.drawString("Grass", 315, 30); 
     }
 }

@@ -12,7 +12,7 @@ public class SimulationFrame extends JFrame{
     private final Timer timer;
     private final JLabel statisticsLabel; 
 
-    private static final int UPDATE_INTERVAL_MS = 100;
+    private static final int UPDATE_INTERVAL_MS = 40;
 
     public SimulationFrame() {
         super("Predator-Prey Simulation");
