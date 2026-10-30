@@ -53,7 +53,7 @@ public abstract class Creature extends Entity {
         return Optional.ofNullable(closest);
     }
 
-    private void moveByDirection(int dx, int dy){
+    protected void moveByDirection(int dx, int dy){
         setX(getX() + dx * speed);
         setY(getY() + dy * speed);
     }
