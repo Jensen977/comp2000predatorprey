@@ -7,6 +7,7 @@ public abstract class Creature extends Entity {
 
     private int speed; 
     private int starvation;
+    private MoveStrategy moveStrategy; 
 
     public Creature(int speed, int starvation, boolean isFood, int x, int y) {
         super(x, y, isFood);
@@ -56,6 +57,14 @@ public abstract class Creature extends Entity {
     protected void moveByDirection(int dx, int dy){
         setX(getX() + dx * speed);
         setY(getY() + dy * speed);
+    }
+
+    protected void setMoveStrategy(MoveStrategy moveStrategy) {
+        this.moveStrategy = moveStrategy; 
+    }
+
+    protected void executeMovement() {
+        moveStrategy.move(this); 
     }
 
     protected void moveTowards(Entity target){
