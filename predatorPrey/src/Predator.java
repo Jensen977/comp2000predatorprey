@@ -38,15 +38,15 @@ public class Predator extends Creature {
     @Override 
     public void movement() {
         if (getStarvation() < HUNT_THRESHOLD) {
-            setMoveStrategy(new WanderStrategy());
-            
+            setMoveStrategy(MoveStrategy.WANDER);
+
         } else {
             Optional<Prey> target = findClosestPrey();
 
             if (target.isPresent()) {
-                setMoveStrategy(new MoveTowardsStrategy(target.get()));
+                setMoveStrategy(MoveStrategy.moveTowards(target.get()));
             } else {
-                setMoveStrategy(new WanderStrategy());
+                setMoveStrategy(MoveStrategy.WANDER);
             }
         }
         
