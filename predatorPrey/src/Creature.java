@@ -67,24 +67,6 @@ public abstract class Creature extends Entity {
         moveStrategy.move(this); 
     }
 
-    protected void moveTowards(Entity target){
-        moveByDirection(
-            Integer.compare(target.getX(), getX()), 
-            Integer.compare(target.getY(), getY()));
-    }
-
-    protected void moveAwayFrom(Entity target){
-        moveByDirection(
-            Integer.compare(getX(), target.getX()), 
-            Integer.compare(getY(), target.getY()));
-    }
-
-    protected void wander(){
-        int dx = (int) (Math.random() * 3) - 1; // Random value between -1 and 1
-        int dy = (int) (Math.random() * 3) - 1; // Random value between -1 and 1
-        moveByDirection(dx, dy);
-    }
-
     public int getSpeed(){
         return speed;
     }
