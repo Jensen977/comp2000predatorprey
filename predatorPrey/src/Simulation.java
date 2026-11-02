@@ -1,6 +1,7 @@
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Simulation {
     public static final int WORLD_WIDTH = 800;
@@ -135,12 +136,14 @@ public class Simulation {
 
     public void nextDay() {
         day++;
-        
-        List<Creature> creaturesAtStartOfDay = new ArrayList<>(creatures);
-        for (Creature creature : creaturesAtStartOfDay) {
+
+        Iterator<Creature> iterator = creatures.iterator();
+
+        while (iterator.hasNext()) {
+            Creature creature = iterator.next();
             if (creature.starve()) {
-                creatures.remove(creature);
-            } 
+                iterator.remove();
+            }
         }
 
         creatureReproduction();
