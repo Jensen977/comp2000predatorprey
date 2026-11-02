@@ -39,6 +39,7 @@ public class Predator extends Creature {
     public void movement() {
         if (getStarvation() < HUNT_THRESHOLD) {
             setMoveStrategy(new WanderStrategy());
+            
         } else {
             Optional<Prey> target = findClosestPrey();
 

@@ -66,20 +66,22 @@ public class Prey extends Creature {
             && distanceTo(closestPredator.get()) <= DANGER_DISTANCE;
 
         if (inDanger) {
-            moveAwayFrom(closestPredator.get());
-            return;
-        }
+            setMoveStrategy(new MoveAwayFromStrategy(closestPredator.get()));
+        
+        } else if (getStarvation() >= GRAZE_THRESHOLD) {
+            Optional<Grass> closestGrass = findClosestEdibleGrass();
 
-        Optional<Grass> closestGrass = findClosestEdibleGrass();
-
-        if (getStarvation() >= GRAZE_THRESHOLD) {
             if (closestGrass.isPresent()) {
-                moveTowards(closestGrass.get());
-            } 
-            return;
+                setMoveStrategy((new MoveTowardsStrategy(closestGrass.get())));
+            } else {
+                setMoveStrategy(new WanderStrategy());
+            }
+
+        } else {
+            setMoveStrategy(new WanderStrategy());
         }
 
-        wander();
+        executeMovement();
     } 
 
     @Override 
