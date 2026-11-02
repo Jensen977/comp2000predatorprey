@@ -1,15 +1,12 @@
 public interface MoveStrategy {
     void move(Creature creature);
-}
 
-// Random movement
-class WanderStrategy implements MoveStrategy {
-    @Override
-    public void move(Creature creature) {
+    MoveStrategy WANDER = creature -> {
         int dx = (int) (Math.random() * 3) - 1; // Random value between -1 and 1
         int dy = (int) (Math.random() * 3) - 1; // Random value between -1 and 1
+
         creature.moveByDirection(dx, dy);
-    }
+    }; 
 }
 
 // Move towards a target
