@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.Optional;
+import java.util.Comparator;
 
 public abstract class Creature extends Entity {
 
@@ -37,21 +38,9 @@ public abstract class Creature extends Entity {
     public abstract void reproduce();
 
     public <E extends Entity> Optional<E> findClosest(List<E> targets){
-        E closest = null;
-        double minDist = Double.MAX_VALUE;
-
-        for (E target : targets){
-            if (target == this){ // Skip self
-                continue; 
-            }
-            double dist = distanceTo(target);
-            if (dist < minDist) {
-                minDist = dist;
-                closest = target;
-            }
-        }
-
-        return Optional.ofNullable(closest);
+        return targets.stream()
+            .filter(target -> target != this)
+            .min(Comparator.comparingDouble(this::distanceTo));
     }
 
     protected void moveByDirection(int dx, int dy){
