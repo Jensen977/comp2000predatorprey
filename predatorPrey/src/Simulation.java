@@ -2,6 +2,8 @@ import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Simulation {
     public static final int WORLD_WIDTH = 800;
@@ -109,6 +111,14 @@ public class Simulation {
         return count;
     }
 
+    public Map<String, Double> getAverageStarvationByType() {
+        return creatures.stream()
+            .collect(Collectors.groupingBy(
+                creature -> creature.getClass().getSimpleName(),
+                Collectors.averagingInt(Creature::getStarvation)
+            ));
+    }
+
     public void update() {
         tick++; 
 
@@ -147,7 +157,6 @@ public class Simulation {
         }
 
         creatureReproduction();
-
     }
 
     private void creatureReproduction() {
