@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.Timer;
+import java.util.Map;
 
 public class SimulationFrame extends JFrame{
     
@@ -11,6 +12,7 @@ public class SimulationFrame extends JFrame{
     private final SimulationPanel simulationPanel; 
     private final Timer timer;
     private final JLabel statisticsLabel; 
+    private final JLabel averageStarvationLabel; 
 
     private static final int UPDATE_INTERVAL_MS = 40;
 
@@ -21,11 +23,13 @@ public class SimulationFrame extends JFrame{
         simulationPanel = new SimulationPanel(simulation); 
         timer = new Timer(UPDATE_INTERVAL_MS, event -> updateSimulation());
         statisticsLabel = new JLabel(); 
+        averageStarvationLabel = new JLabel(); 
 
         setLayout(new BorderLayout()); 
 
         add(simulationPanel, BorderLayout.CENTER);
         add(createControlPanel(), BorderLayout.SOUTH);
+        add(averageStarvationLabel, BorderLayout.NORTH);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -71,5 +75,17 @@ public class SimulationFrame extends JFrame{
                 simulation.getPredatorCount(), 
                 simulation.getPreyCount(),
                 simulation.getEdibleGrassCount())); 
+
+        Map<String, Double> averages = simulation.getAverageStarvationByType(); 
+
+        String predatorAverage = averages.containsKey("Predator")
+            ? String.format("%.1f", averages.get("Predator")) : "N/A";
+        String preyAverage = averages.containsKey("Prey")
+            ? String.format("%.1f", averages.get("Prey")) : "N/A"; 
+
+        averageStarvationLabel.setText(String.format(
+            "AverageStarvation  |  Predators: %s  Preys: %s", 
+            predatorAverage, preyAverage
+        ));
     }
 }
