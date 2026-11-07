@@ -1,6 +1,9 @@
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Color;
 import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +43,19 @@ public class SimulationFrame extends JFrame{
         setLayout(new BorderLayout()); 
 
         // Group the labels in a small floating tatistics panel
-        JPanel statsPanel = new JPanel();
+        JPanel statsPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setColor(new Color(255, 255, 255, 150));
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+                g2d.dispose();
+            }
+        };
+
+        statsPanel.setOpaque(false);
         statsPanel.setLayout(new BoxLayout(statsPanel, BoxLayout.Y_AXIS));
         statsPanel.setBorder(BorderFactory.createTitledBorder("Statistics"));
 
