@@ -4,6 +4,8 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.Timer;
+
+import java.util.IntSummaryStatistics;
 import java.util.Map;
 
 public class SimulationFrame extends JFrame{
@@ -69,23 +71,35 @@ public class SimulationFrame extends JFrame{
     }
 
     public void updateLabels() {
+        
+
+        Map<String, IntSummaryStatistics> statistics = simulation.getCreatureStatistics(); 
+
+        IntSummaryStatistics predatorStat = statistics.get("Predator"); 
+        IntSummaryStatistics preyStat = statistics.get("Prey"); 
+
+        long predatorCount = predatorStat == null ? 0 : predatorStat.getCount();
+        long preyCount = preyStat == null ? 0 : preyStat.getCount();
+
+        String predatorAverage = predatorStat == null 
+            ? "N/A" 
+            : String.format("%.1f", predatorStat.getAverage());
+
+        String preyAverage = preyStat == null 
+            ? "N/A" 
+            : String.format("%.1f", preyStat.getAverage());
+
         statisticsLabel.setText(String.format(
-                "Day %d  |  Predators: %d  Prey %d  Grass: %d", 
-                simulation.getDay(),
-                simulation.getPredatorCount(), 
-                simulation.getPreyCount(),
-                simulation.getEdibleGrassCount())); 
-
-        Map<String, Double> averages = simulation.getAverageStarvationByType(); 
-
-        String predatorAverage = averages.containsKey("Predator")
-            ? String.format("%.1f", averages.get("Predator")) : "N/A";
-        String preyAverage = averages.containsKey("Prey")
-            ? String.format("%.1f", averages.get("Prey")) : "N/A"; 
+            "Day %d  |  Predators: %d  Prey %d  Grass: %d", 
+            simulation.getDay(),
+            predatorCount, 
+            preyCount,
+            simulation.getEdibleGrassCount())); 
 
         averageStarvationLabel.setText(String.format(
             "AverageStarvation  |  Predators: %s  Preys: %s", 
-            predatorAverage, preyAverage
+            predatorAverage, 
+            preyAverage
         ));
     }
 }

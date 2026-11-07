@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.IntSummaryStatistics;
 
 public class Simulation {
     public static final int WORLD_WIDTH = 800;
@@ -81,26 +82,6 @@ public class Simulation {
         return grassList;
     }
 
-    public int getPredatorCount() {
-        int count = 0;
-        for (Creature creature : creatures) {
-            if (creature instanceof Predator) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    public int getPreyCount() {
-        int count = 0;
-        for (Creature creature : creatures) {
-            if (creature instanceof Prey) {
-                count++;
-            }
-        }
-        return count;
-    }
-
     public int getEdibleGrassCount() {
         int count = 0;
         for (Grass grass : grassList) {
@@ -111,11 +92,11 @@ public class Simulation {
         return count;
     }
 
-    public Map<String, Double> getAverageStarvationByType() {
+    public Map<String, IntSummaryStatistics> getCreatureStatistics() {
         return creatures.stream()
             .collect(Collectors.groupingBy(
                 creature -> creature.getClass().getSimpleName(),
-                Collectors.averagingInt(Creature::getStarvation)
+                Collectors.summarizingInt(Creature::getStarvation)
             ));
     }
 

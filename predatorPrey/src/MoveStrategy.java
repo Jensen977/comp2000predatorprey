@@ -1,3 +1,4 @@
+@FunctionalInterface 
 public interface MoveStrategy {
     void move(Creature creature);
 
