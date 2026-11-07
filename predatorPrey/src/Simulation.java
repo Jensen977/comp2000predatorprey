@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.IntSummaryStatistics;
+import java.util.Comparator;
 
 public class Simulation {
     public static final int WORLD_WIDTH = 800;
@@ -107,6 +108,15 @@ public class Simulation {
                 creature -> creature.getClass().getSimpleName(),
                 Collectors.summarizingInt(Creature::getStarvation)
             ));
+    }
+
+    public List<String> getMostStarvingCreatures() {
+        return creatures.stream()
+            .sorted(Comparator.comparingInt(Creature::getStarvation).reversed())
+            .limit(3)
+            .map(creature -> creature.getClass().getSimpleName() 
+                + " (Starvation: " + creature.getStarvation() + ")")
+            .collect(Collectors.toList());
     }
 
     public void update() {
