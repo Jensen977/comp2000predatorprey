@@ -100,6 +100,15 @@ public class Simulation {
             ));
     }
 
+    // Keep for comparison with the sequential collector 
+    public Map<String, IntSummaryStatistics> getParallelCreatureStatistics() {
+        return creatures.parallelStream()
+            .collect(Collectors.groupingByConcurrent(
+                creature -> creature.getClass().getSimpleName(),
+                Collectors.summarizingInt(Creature::getStarvation)
+            ));
+    }
+
     public void update() {
         tick++; 
 
