@@ -148,9 +148,7 @@ public class Simulation {
         
         tick++; 
 
-        for (Grass grass : grassList) {
-            grass.tick();
-        }
+        grassList.forEach(Grass -> Grass.tick());
 
         List<Creature> movingCreatures = new ArrayList<>(creatures);
         for (Creature creature : movingCreatures) {
