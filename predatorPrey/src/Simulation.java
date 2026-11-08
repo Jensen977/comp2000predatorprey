@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Collector;
 import java.util.IntSummaryStatistics;
 import java.util.Comparator;
 
@@ -23,6 +24,10 @@ public class Simulation {
     private final List<Grass> grassList = new ArrayList<>();
     private final Random random; 
 
+    // Each record records a birth or death and the day it happened
+    private record PopulationEvent(int day, String Species, Boolean birth) {}
+    private final List<PopulationEvent> populationEvents = new ArrayList<>();
+
     public Simulation() {
         random = new Random();
         reset();
@@ -39,6 +44,7 @@ public class Simulation {
     public void reset() {
         creatures.clear();
         grassList.clear();
+        populationEvents.clear();
 
         tick = 0;
         day = 0;
@@ -119,7 +125,33 @@ public class Simulation {
             .collect(Collectors.toList());
     }
 
+    public Map<String, long[]> getBirthDeathStatistics(int targetDay) {
+        return populationEvents.stream()
+            .filter(event -> event.day() == targetDay)
+            .collect(Collectors.groupingBy(
+                PopulationEvent::Species,
+                Collector.of(
+                    () -> new long[2], // [0] for births, [1] for deaths
+                    (counts, event) -> {
+                        if (event.birth()) {
+                            counts[0]++;
+                        } else {
+                            counts[1]++;
+                        }
+                    },
+                    (left, right) -> {
+                        left[0] += right[0];
+                        left[1] += right[1];
+                        return left;
+                    }
+                )
+            ));
+    }
+
     public void update() {
+        List<Creature> beforeUpdate = new ArrayList<>(creatures);
+        int eventDay = day + 1; // Record events for the next day
+
         tick++; 
 
         for (Grass grass : grassList) {
@@ -141,6 +173,21 @@ public class Simulation {
 
         if (tick % TICKS_PER_DAY == 0) {
             nextDay();
+        }
+
+        // Newly present creatures were born; missing creatures died
+        for (Creature creature : creatures) {
+            if (!beforeUpdate.contains(creature)) {
+                populationEvents.add(new PopulationEvent(
+                    eventDay, creature.getClass().getSimpleName(), true));
+            }
+        }
+
+        for (Creature creature : beforeUpdate) {
+            if (!creatures.contains(creature)) {
+                populationEvents.add(new PopulationEvent(
+                    eventDay, creature.getClass().getSimpleName(), false));
+            }
         }
     }
 

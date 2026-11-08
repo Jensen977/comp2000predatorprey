@@ -26,6 +26,8 @@ public class SimulationFrame extends JFrame{
     private final JLabel statisticsLabel; 
     private final JLabel averageStarvationLabel; 
     private final JLabel mostStarvingLabel;
+    private final JLabel birthsLabel; 
+    private final JLabel deathsLabel;
 
     private static final int UPDATE_INTERVAL_MS = 40;
 
@@ -39,6 +41,8 @@ public class SimulationFrame extends JFrame{
         statisticsLabel = new JLabel(); 
         averageStarvationLabel = new JLabel(); 
         mostStarvingLabel = new JLabel();
+        birthsLabel = new JLabel();
+        deathsLabel = new JLabel();
 
         setLayout(new BorderLayout()); 
 
@@ -62,12 +66,18 @@ public class SimulationFrame extends JFrame{
         statsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         averageStarvationLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         mostStarvingLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        birthsLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        deathsLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         statsPanel.add(statisticsLabel);
         statsPanel.add(Box.createVerticalStrut(12));
         statsPanel.add(averageStarvationLabel);
         statsPanel.add(Box.createVerticalStrut(12));
         statsPanel.add(mostStarvingLabel);
+        statsPanel.add(Box.createVerticalStrut(12));
+        statsPanel.add(birthsLabel);
+        statsPanel.add(Box.createVerticalStrut(12));
+        statsPanel.add(deathsLabel);
 
         JPanel overlay = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
         overlay.setOpaque(false);
@@ -152,5 +162,23 @@ public class SimulationFrame extends JFrame{
                 : String.join("<br>", mostStarving)) +
                 "</html>"
         );
+
+        Map<String, long[]> daily = simulation.getBirthDeathStatistics(simulation.getDay());
+        long[] predatorEvents = daily.getOrDefault("Predator", new long[2]);
+        long[] preyEvents = daily.getOrDefault("Prey", new long[2]);
+        
+        birthsLabel.setText(String.format(
+            "<html><b>Births (Day %d)</b><br>Predators: %d<br>Prey: %d</html>", 
+            simulation.getDay(), 
+            predatorEvents[0], 
+            preyEvents[0]
+        ));
+
+        deathsLabel.setText(String.format(
+            "<html><b>Deaths (Day %d)</b><br>Predators: %d<br>Prey: %d</html>", 
+            simulation.getDay(), 
+            predatorEvents[1], 
+            preyEvents[1]
+        ));
     }
 }
