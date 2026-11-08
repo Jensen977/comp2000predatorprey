@@ -81,13 +81,12 @@ public class Prey extends Creature {
             return; // Not hungry enough to eat
         }
 
-        Optional<Grass> closestGrass = findClosestEdibleGrass();
-        
-        if (closestGrass.isPresent() 
-            && distanceTo(closestGrass.get()) <= EATING_DISTANCE) {
-            closestGrass.get().consume();
-            resetStarvation();
-        }
+        findClosestEdibleGrass()
+            .filter(grass -> distanceTo(grass) <= EATING_DISTANCE)
+            .ifPresent(grass -> {
+                grass.consume();
+                resetStarvation();
+            }); 
     }
 
     @Override

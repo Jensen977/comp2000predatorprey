@@ -50,14 +50,13 @@ public class Predator extends Creature {
 
     @Override 
     public void eat() {
-        Optional<Prey> target = findClosestPrey();
-
-        if (target.isPresent() 
-            && distanceTo(target.get()) <= CATCH_DISTANCE) {
-                
-            creatures.remove(target.get());
-            resetStarvation();
-        }
+        findClosestPrey()
+            .filter(prey -> distanceTo(prey) <= CATCH_DISTANCE)
+            .ifPresent(prey -> {
+                if (creatures.remove(prey)) {
+                    resetStarvation();
+                }
+            });
     }
 
     @Override 
