@@ -126,21 +126,20 @@ public class Simulation {
             .filter(event -> event.day() == targetDay)
             .collect(Collectors.groupingBy(
                 PopulationEvent::Species,
-                Collector.of(
-                    () -> new long[2], // [0] for births, [1] for deaths
-                    (counts, event) -> {
-                        if (event.birth()) {
-                            counts[0]++;
-                        } else {
-                            counts[1]++;
-                        }
-                    },
-                    (left, right) -> {
-                        left[0] += right[0];
-                        left[1] += right[1];
-                        return left;
+                Collector.of(() -> new long[2], (counts, event) -> { 
+                    // [0] for births, [1] for deaths
+                    if (event.birth()) { 
+                        counts[0]++;
+                    } else {
+                        counts[1]++; 
                     }
-                )
+                }, 
+                // Merge partial birth/death counts (mainly for parallel streams)
+                (left, right) -> { 
+                    left[0] += right[0];
+                    left[1] += right[1];
+                    return left; 
+                })
             ));
     }
 
