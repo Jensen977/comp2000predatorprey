@@ -63,7 +63,7 @@ public class SimulationFrame extends JFrame{
         statsPanel.setLayout(new BoxLayout(statsPanel, BoxLayout.Y_AXIS));
         statsPanel.setBorder(BorderFactory.createTitledBorder("Statistics"));
 
-        statsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        statisticsLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         averageStarvationLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         mostStarvingLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         birthsLabel.setAlignmentX(Component.LEFT_ALIGNMENT);

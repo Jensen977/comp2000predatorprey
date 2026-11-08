@@ -1,5 +1,4 @@
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Optional;
 
 public class Predator extends Creature {
@@ -24,15 +23,11 @@ public class Predator extends Creature {
     }
 
     private Optional<Prey> findClosestPrey() {
-        List<Prey> preyList = new ArrayList<>();
-
-        for (Creature creature : creatures) {
-            if (creature instanceof Prey) {
-                preyList.add((Prey) creature);
-            }
-        }
-
-        return findClosest(preyList);
+        return findClosest(
+            creatures.stream()
+                .filter(creature -> creature instanceof Prey)
+                .map(creature -> (Prey) creature)
+        );
     }
 
     @Override 

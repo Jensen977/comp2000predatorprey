@@ -1,4 +1,4 @@
-import java.util.List;
+import java.util.stream.Stream;
 import java.util.Optional;
 import java.util.Comparator;
 
@@ -37,8 +37,8 @@ public abstract class Creature extends Entity {
 
     public abstract void reproduce();
 
-    public <E extends Entity> Optional<E> findClosest(List<E> targets){
-        return targets.stream()
+    public <E extends Entity> Optional<E> findClosest(Stream<E> targets){
+        return targets
             .filter(target -> target != this)
             .min(Comparator.comparingDouble(this::distanceTo));
     }

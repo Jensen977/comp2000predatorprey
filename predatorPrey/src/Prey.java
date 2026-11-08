@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,25 +36,17 @@ public class Prey extends Creature {
     }
 
     private Optional<Grass> findClosestEdibleGrass() {
-        List<Grass> edibleGrass = new ArrayList<>();
-
-        for (Grass g : grassList){
-            if (g.isEdible()) {
-                edibleGrass.add(g);
-            }
-        }
-        return findClosest(edibleGrass);
+        return findClosest(
+            grassList.stream()
+                .filter(Grass::isEdible)
+        );
     }
 
     private Optional<Creature> findClosestPredator() {
-        List<Creature> predators = new ArrayList<>();
-
-        for (Creature creature : creatures) {
-            if (creature instanceof Predator) {
-                predators.add(creature);
-            }
-        }
-        return findClosest(predators);
+        return findClosest(
+            creatures.stream()
+                .filter(creature -> creature instanceof Predator)
+        );
     }
 
     @Override 
