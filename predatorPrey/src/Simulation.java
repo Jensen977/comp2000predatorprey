@@ -90,13 +90,9 @@ public class Simulation {
     }
 
     public int getEdibleGrassCount() {
-        int count = 0;
-        for (Grass grass : grassList) {
-            if (grass.isEdible()) {
-                count++;
-            }
-        }
-        return count;
+        return (int) grassList.stream()
+            .filter(Grass::isEdible)
+            .count();
     }
 
     public Map<String, IntSummaryStatistics> getCreatureStatistics() {
@@ -149,9 +145,7 @@ public class Simulation {
     }
 
     public void update() {
-        List<Creature> beforeUpdate = new ArrayList<>(creatures);
-        int eventDay = day + 1; // Record events for the next day
-
+        
         tick++; 
 
         for (Grass grass : grassList) {
@@ -176,6 +170,9 @@ public class Simulation {
         }
 
         // Newly present creatures were born; missing creatures died
+        List<Creature> beforeUpdate = new ArrayList<>(creatures);
+        int eventDay = day + 1; // Record events for the next day
+
         for (Creature creature : creatures) {
             if (!beforeUpdate.contains(creature)) {
                 populationEvents.add(new PopulationEvent(
