@@ -10,6 +10,15 @@ public abstract class Creature extends Entity {
     private int starvation;
     private MoveStrategy moveStrategy; 
 
+    private int consecutiveMovingTicks;
+    private int speedBoostTicks;
+
+    private final SpeedEffect speedEffect = new SpeedBoost(
+        new FatigueSlowDown(
+            new StarvationSlowDown((creature, baseSpeed) -> baseSpeed)
+        )
+    );
+
     public Creature(int speed, int starvation, boolean isFood, int x, int y) {
         super(x, y, isFood);
         this.speed = speed;
