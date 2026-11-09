@@ -145,7 +145,7 @@ public class Simulation {
 
     public void update() {
         List<Creature> beforeUpdate = new ArrayList<>(creatures);
-        int eventDay = day + 1; // Let the simulation start at day 1 instead of 0
+        int eventDay = day + 1; // Record events for the day currently being simulated
         
         tick++; 
 
