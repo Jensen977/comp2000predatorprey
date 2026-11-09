@@ -53,9 +53,15 @@ public class Prey extends Creature {
     public void movement() {
         Optional<Creature> closestPredator = findClosestPredator();
 
+        boolean wasInDanger = inDanger;
         inDanger = closestPredator.isPresent() 
             && distanceTo(closestPredator.get()) <= DANGER_DISTANCE;
 
+        // A newly detected predator triggers an escape burst for five ticks
+        if (inDanger && !wasInDanger) {
+            activateSpeedBoost(5);
+        }
+            
         if (inDanger) {
             setMoveStrategy(MoveStrategy.moveAwayFrom(closestPredator.get()));
         

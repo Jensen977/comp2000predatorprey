@@ -52,9 +52,36 @@ public abstract class Creature extends Entity {
             .min(Comparator.comparingDouble(this::distanceTo));
     }
 
+    public int getEffectiveSpeed() {
+        return speedEffect.apply(this, speed);
+    }
+
+    public int getConsecutiveMovingTicks() {
+        return consecutiveMovingTicks;
+    }
+
+    public boolean hasSpeedBoost() {
+        return speedBoostTicks > 0;
+    }
+
+    public void activateSpeedBoost(int durationTicks) {
+        if (durationTicks > 0) {
+            speedBoostTicks = Math.max(speedBoostTicks, durationTicks);
+        }
+    }
+
     protected void moveByDirection(int dx, int dy){
-        setX(getX() + dx * speed);
-        setY(getY() + dy * speed);
+        int effectiveSpeed = getEffectiveSpeed();
+
+        setX(getX() + dx * effectiveSpeed);
+        setY(getY() + dy * effectiveSpeed);
+
+        //Standing still resets the consecutive moving ticks counter
+        if (dx == 0 && dy == 0) {
+            consecutiveMovingTicks = 0;
+        } else {
+            consecutiveMovingTicks++;
+        }
     }
 
     protected void setMoveStrategy(MoveStrategy moveStrategy) {
@@ -63,6 +90,10 @@ public abstract class Creature extends Entity {
 
     protected void executeMovement() {
         moveStrategy.move(this); 
+        //Count down after movement so the tick receives the boost
+        if (speedBoostTicks > 0) {
+            speedBoostTicks--;
+        }
     }
 
     public int getSpeed(){
