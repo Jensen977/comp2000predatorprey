@@ -34,6 +34,8 @@ public class SimulationPanel extends JPanel {
         drawCreature(g2d, scaleX, scaleY);
         drawGrass(g2d, scaleX, scaleY); 
         drawLegend(g2d); 
+
+        g2d.dispose();
     }
     
     private int toScreenX(int worldX, double scaleX) {

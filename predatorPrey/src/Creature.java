@@ -34,6 +34,7 @@ public abstract class Creature extends Entity {
 
     public void resetStarvation(){
         starvation = 0;
+        consecutiveMovingTicks = 0; // Reset fatigue after eating
     }
 
         public int getStarvation(){
