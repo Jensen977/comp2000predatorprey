@@ -143,7 +143,7 @@ public class SimulationFrame extends JFrame{
 
         statisticsLabel.setText(String.format(
             "<html>Day: %d<br><br><b>Population</b><br>Predators: %d<br>Prey: %d<br>Grass: %d</html>", 
-            simulation.getDay(),
+            simulation.getDay() + 1,
             predatorCount, 
             preyCount,
             simulation.getEdibleGrassCount())); 

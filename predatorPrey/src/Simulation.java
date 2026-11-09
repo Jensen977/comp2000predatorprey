@@ -144,6 +144,8 @@ public class Simulation {
     }
 
     public void update() {
+        List<Creature> beforeUpdate = new ArrayList<>(creatures);
+        int eventDay = day + 1; // Let the simulation start at day 1 instead of 0
         
         tick++; 
 
@@ -167,9 +169,6 @@ public class Simulation {
         }
 
         // Newly present creatures were born; missing creatures died
-        List<Creature> beforeUpdate = new ArrayList<>(creatures);
-        int eventDay = day + 1; // Record events for the next day
-
         for (Creature creature : creatures) {
             if (!beforeUpdate.contains(creature)) {
                 populationEvents.add(new PopulationEvent(
